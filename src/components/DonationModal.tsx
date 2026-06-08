@@ -52,10 +52,8 @@ export default function DonationModal({ onClose }: Props) {
       const stripe = await loadStripe(STRIPE_PUBLIC_KEY)
       if (!stripe) throw new Error('No se pudo cargar Stripe.')
 
-      // Auto-detect endpoint: Vite dev proxy vs Netlify production function
-      const apiUrl = import.meta.env.DEV
-        ? '/api/create-donation-session'
-        : '/.netlify/functions/create-donation-session'
+      // Both dev (Vite proxy) and production (Vercel serverless) use the same path
+      const apiUrl = '/api/create-donation-session'
 
       const res = await fetch(apiUrl, {
         method: 'POST',
