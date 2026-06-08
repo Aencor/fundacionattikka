@@ -46,7 +46,7 @@ export default defineConfig(({ mode }) => {
 
               // Dynamic import stripe only in Node context
               const { default: Stripe } = await import('stripe')
-              const stripe = new Stripe(stripeKey, { apiVersion: '2025-04-30.basil' })
+              const stripe = new Stripe(stripeKey, { apiVersion: '2026-05-27.dahlia' })
 
               const session = await stripe.checkout.sessions.create({
                 payment_method_types: ['card'],

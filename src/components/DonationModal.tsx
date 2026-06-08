@@ -30,7 +30,7 @@ export default function DonationModal({ onClose }: Props) {
   const [donor, setDonor] = useState<DonorInfo>({ name: '', email: '', rfc: '', wantsReceipt: false })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [success, setSuccess] = useState(false)
+  const [success] = useState(false)
 
   const finalAmount = useCustom ? parseFloat(customAmount) || 0 : amount
 
@@ -91,8 +91,10 @@ export default function DonationModal({ onClose }: Props) {
         return
       }
 
-      const result = await stripe.redirectToCheckout({ sessionId })
-      if (result.error) throw new Error(result.error.message)
+      // Fallback: use sessionId if no URL returned
+      if (sessionId) {
+        throw new Error('No se recibió URL de checkout. Verifica la configuración de Stripe.')
+      }
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Ocurrió un error al procesar el pago.')
     } finally {
